@@ -1,0 +1,16 @@
+{
+  "environment": "Docker Compose on local Mac",
+  "url": "http://127.0.0.1:8080",
+  "services": [
+    "proxy",
+    "app",
+    "worker",
+    "db",
+    "storage"
+  ],
+  "backup_task": 2,
+  "snapshot": "7fbfe564503137b4735881254907374d8f0bd5b9ffc26bd913758278b1e5b4b4",
+  "restore_task": 3,
+  "sha256_match": true,
+  "repository_check_task": 4
+}

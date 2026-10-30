@@ -1,0 +1,52 @@
+Local native verification on 2026-10-27
+Go 1.26.0; PostgreSQL from temporary pgserver; restic 0.18.0
+This first section records the native verification before Docker was started.
+
+?   	coursework/backup-manager/cmd/backup-manager	[no test files]
+=== RUN   TestPasswordHash
+--- PASS: TestPasswordHash (3.09s)
+=== RUN   TestSourceConfinement
+--- PASS: TestSourceConfinement (0.00s)
+=== RUN   TestResticRoundTrip
+--- PASS: TestResticRoundTrip (7.58s)
+=== RUN   TestHTTPGuards
+--- PASS: TestHTTPGuards (0.00s)
+=== RUN   TestDatabaseQueueAndPermissions
+--- PASS: TestDatabaseQueueAndPermissions (3.94s)
+=== RUN   TestWorkerDatabaseRoundTrip
+2026/10/27 19:33:08 INFO task finished id=1 status=success
+2026/10/27 19:33:09 INFO task finished id=2 status=success
+2026/10/27 19:33:12 INFO task finished id=3 status=success
+--- PASS: TestWorkerDatabaseRoundTrip (12.11s)
+PASS
+ok  	coursework/backup-manager/internal/app	28.457s
+
+go vet ./...: PASS
+go build: PASS
+
+Docker Compose verification on 2026-10-27:
+Five services running; app and database healthy.
+Initial backup failed on macOS bind mount O_NOATIME reads; source staging added and tested.
+TestStagedResticRoundTrip: PASS.
+Container backup task 2: PASS.
+Container restore task 3: PASS.
+Independent restored-file SHA-256 comparison: PASS.
+Container repository check task 4: PASS.
+Details: docs/docker-verification.json.
+Swarm, cloud deployment and remote CI/CD remain unverified.
+
+After initialization concurrency fix:
+=== RUN   TestDatabaseQueueAndPermissions
+--- PASS: TestDatabaseQueueAndPermissions (3.96s)
+=== RUN   TestConcurrentBootstrap
+--- PASS: TestConcurrentBootstrap (3.15s)
+=== RUN   TestWorkerDatabaseRoundTrip
+2026/10/27 19:34:18 INFO task finished id=1 status=success
+2026/10/27 19:34:19 INFO task finished id=2 status=success
+2026/10/27 19:34:22 INFO task finished id=3 status=success
+--- PASS: TestWorkerDatabaseRoundTrip (12.18s)
+PASS
+ok  	coursework/backup-manager/internal/app	21.018s
+
+go vet ./...: PASS
+go build: PASS

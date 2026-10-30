@@ -1,0 +1,12 @@
+.git
+.env
+.env.*
+secrets
+*.key
+*.pem
+**/__pycache__
+docs/screenshots
+bin
+restores
+.idea
+.vscode
